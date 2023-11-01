@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "markov"
+version = "0.1.0"
+description = ""
+authors = ["Jim Neuendorf <jim.neuendorf@gmx.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,6 +1,6 @@
 import itertools as it
-import json
 import os
+import pickle
 import random
 from collections import defaultdict
 from typing import Sequence, TypeVar, Generic, Literal, Self
@@ -37,7 +37,7 @@ class MarkovChain(Generic[T]):
         }
 
     @classmethod
-    def from_data(cls, words: Sequence[T], order: int = 1):
+    def from_data(cls, words: Sequence[T], order: int = 1) -> Self:
         alphabet = tuple(sorted(set(words)))
         group_counts: dict[tuple[T, ...], int] = defaultdict(int)
         condition_counts: dict[tuple[T, ...], int] = defaultdict(int)
@@ -54,12 +54,12 @@ class MarkovChain(Generic[T]):
             group_counts[word_group] += 1
             condition_counts[condition_group] += 1
 
-        print(
-            f"Stats:\n"
-            f"  #words: {len(words)}\n"
-            f"  #distinct words: {len(alphabet)}\n"
-            f"  #distinct word groups: {len(group_counts)}\n"
-        )
+        # print(
+        #     f"Stats:\n"
+        #     f"  #words: {len(words)}\n"
+        #     f"  #distinct words: {len(alphabet)}\n"
+        #     f"  #distinct word groups: {len(group_counts)}\n"
+        # )
         transition_probs = {
             condition_group: {
                 word: group_counts[(*condition_group, word)] / condition_counts[condition_group]
@@ -75,8 +75,8 @@ class MarkovChain(Generic[T]):
 
     @classmethod
     def from_file(cls, filename: str | os.PathLike) -> Self:
-        with open(filename) as file:
-            data = json.load(file)
+        with open(filename, mode="rb") as file:
+            data = pickle.load(file)
         return cls(
             alphabet=data["alphabet"],
             order=data["order"],
@@ -84,8 +84,8 @@ class MarkovChain(Generic[T]):
         )
 
     def save(self, filename: str | os.PathLike) -> None:
-        with open(filename, mode="w") as file:
-            json.dump(
+        with open(filename, mode="wb") as file:
+            pickle.dump(
                 dict(
                     alphabet=self.alphabet,
                     order=self.order,

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "markov"
+name = "markov_chains"
 version = "0.1.0"
 description = ""
 authors = ["Jim Neuendorf <jim.neuendorf@gmx.de>"]
